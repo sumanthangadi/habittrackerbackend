@@ -34,7 +34,7 @@ exports.getTodayHabits = async (req, res) => {
         { type: 'daily' },
         { type: 'custom', days: dayName },
       ],
-    });
+    }).sort({ createdAt: 1 });
 
     // Get today's logs
     const logs = await HabitLog.find({
@@ -73,7 +73,7 @@ exports.getWeeklyStats = async (req, res) => {
       dates.push(d.toISOString().split('T')[0]);
     }
 
-    const habits = await Habit.find({ active: true });
+    const habits = await Habit.find({ active: true }).sort({ createdAt: 1 });
     const logs = await HabitLog.find({
       date: { $in: dates },
       completed: true,

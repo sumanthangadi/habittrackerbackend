@@ -4,7 +4,7 @@ const Habit = require('../models/Habit');
 // @route   GET /api/habits
 exports.getHabits = async (req, res) => {
   try {
-    const habits = await Habit.find().sort({ createdAt: -1 });
+    const habits = await Habit.find().sort({ createdAt: 1 });
     res.status(200).json({ success: true, data: habits });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });

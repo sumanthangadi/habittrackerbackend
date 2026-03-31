@@ -107,6 +107,9 @@ export default function WeekTable() {
                 {habit.time && <span className="block text-[10px] text-text-muted/60 mt-0.5">{habit.time}</span>}
               </th>
             ))}
+            <th className="text-right text-xs font-semibold text-text-muted uppercase tracking-wider p-3 bg-surface-light/20 min-w-[100px] sticky right-0 z-10">
+              Daily Progress
+            </th>
           </tr>
         </thead>
         <tbody>
@@ -168,6 +171,38 @@ export default function WeekTable() {
                     </td>
                   );
                 })}
+                
+                {/* Calculate Daily Progress */
+                (() => {
+                  const applicableHabits = habits.filter(
+                    (h) => h.type === 'daily' || (h.type === 'custom' && h.days?.includes(shortDay))
+                  );
+                  
+                  const total = applicableHabits.length;
+                  const completed = applicableHabits.filter(
+                    (h) => logs[`${h._id}_${date}`]
+                  ).length;
+                  
+                  const percentage = total > 0 ? Math.round((completed / total) * 100) : 0;
+                  
+                  return (
+                    <td className={`p-3 text-right sticky right-0 z-10 ${isToday ? 'bg-primary/8' : 'bg-bg'}`}>
+                      <div className="flex flex-col items-end justify-center h-full">
+                        <span className={`text-sm font-bold ${percentage === 100 ? 'text-success' : percentage >= 50 ? 'text-warning' : 'text-text-muted'}`}>
+                          {total > 0 ? `${percentage}%` : '—'}
+                        </span>
+                        {total > 0 && (
+                          <div className="w-16 h-1 bg-surface-light rounded-full mt-1.5 overflow-hidden">
+                            <div 
+                              className={`h-full rounded-full transition-all duration-500 ${percentage === 100 ? 'bg-success' : percentage >= 50 ? 'bg-warning' : 'bg-danger'}`}
+                              style={{ width: `${percentage}%` }}
+                            />
+                          </div>
+                        )}
+                      </div>
+                    </td>
+                  );
+                })()}
               </tr>
             );
           })}
