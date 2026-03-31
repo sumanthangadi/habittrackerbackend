@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { View, Text, StyleSheet, ActivityIndicator, ScrollView, TouchableOpacity, RefreshControl } from 'react-native';
 import { getHabits, getWeeklyStats, logHabit } from '../services/api';
 import { Theme } from '../theme/Theme';
@@ -8,6 +8,10 @@ export default function WeekGrid() {
   const [logs, setLogs] = useState({});
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
+
+  const scrollRef = useRef(null);
+  const cardOffsets = useRef({});
+  const todayIndex = useRef(0);
 
   const today = new Date();
   const dayNames = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
@@ -48,12 +52,33 @@ export default function WeekGrid() {
         });
       }
       setLogs(logMap);
+
+      // After data is ready, scroll to today's card
+      const dayIdx = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].indexOf(
+        ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'][new Date().getDay()]
+      );
+      todayIndex.current = dayIdx < 0 ? 0 : dayIdx;
     } catch (err) {
       console.error('Failed to fetch week data:', err);
     } finally {
       setLoading(false);
     }
   };
+
+  const scrollToToday = () => {
+    setTimeout(() => {
+      const offset = cardOffsets.current[todayIndex.current];
+      if (scrollRef.current && offset !== undefined) {
+        scrollRef.current.scrollTo({ y: offset, animated: true });
+      }
+    }, 300);
+  };
+
+  useEffect(() => {
+    if (!loading) {
+      scrollToToday();
+    }
+  }, [loading]);
 
   const onRefresh = async () => {
     setRefreshing(true);
@@ -93,6 +118,7 @@ export default function WeekGrid() {
   // To fit on a narrow screen, mobile uses Days as the big block, Habits as the rows inside each Day block.
   return (
     <ScrollView 
+      ref={scrollRef}
       showsVerticalScrollIndicator={false} 
       contentContainerStyle={styles.container}
       refreshControl={
@@ -119,7 +145,13 @@ export default function WeekGrid() {
         const percentage = total > 0 ? Math.round((completed / total) * 100) : 0;
 
         return (
-          <View key={dayName} style={[styles.dayCard, isToday && styles.dayCardToday]}>
+          <View 
+            key={dayName} 
+            style={[styles.dayCard, isToday && styles.dayCardToday]}
+            onLayout={(e) => {
+              cardOffsets.current[dayIdx] = e.nativeEvent.layout.y;
+            }}
+          >
             {/* Day Header */}
             <View style={styles.dayHeader}>
               <View>
