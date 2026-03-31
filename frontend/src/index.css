@@ -19,8 +19,8 @@
   --color-danger: #4a2a2a;
   --color-warning: #4a3a2a;
   
-  --color-text: #9b9b9b;
-  --color-text-muted: #6b6b6b;
+  --color-text: #eaeaea; /* stronger, more visible text */
+  --color-text-muted: #9b9b9b; /* previous text color shifted to muted */
   
   --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
 }
