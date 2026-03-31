@@ -210,6 +210,7 @@ export default function TodayList() {
             <Text style={styles.quickAddText}>+ Add new task</Text>
           </TouchableOpacity>
         )}
+      </View>
       </ScrollView>
     </KeyboardAvoidingView>
   );
