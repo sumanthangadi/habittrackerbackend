@@ -15,11 +15,11 @@
 
 ### Frontend (Web Dashboard)
 
-- [ ] **WEB-01**: Today's view with interactive checklist for habits and tasks.
-- [ ] **WEB-02**: Weekly table view showing completion across past 7 days.
-- [ ] **WEB-03**: Weekly performance visualization using Recharts (Graph/Insights).
-- [ ] **WEB-04**: Admin interface for managing (Add/Edit/Delete) habits and tasks.
-- [ ] **WEB-05**: Responsive design with Tailwind CSS (Desktop & Mobile-friendly web).
+- [x] **WEB-01**: Today's view with interactive checklist for habits and tasks.
+- [x] **WEB-02**: Weekly table view showing completion across past 7 days.
+- [x] **WEB-03**: Weekly performance visualization using Recharts (Graph/Insights).
+- [x] **WEB-04**: Admin interface for managing (Add/Edit/Delete) habits and tasks.
+- [x] **WEB-05**: Responsive design with Tailwind CSS (Desktop & Mobile-friendly web).
 
 ### Mobile App (Expo)
 
@@ -51,11 +51,11 @@
 | BACK-03 | Phase 1 | Complete |
 | BACK-04 | Phase 2 | Complete |
 | BACK-05 | Phase 2 | Complete |
-| WEB-01 | Phase 3 | Pending |
-| WEB-02 | Phase 3 | Pending |
-| WEB-03 | Phase 4 | Pending |
-| WEB-04 | Phase 4 | Pending |
-| WEB-05 | Phase 3 | Pending |
+| WEB-01 | Phase 3 | Complete |
+| WEB-02 | Phase 3 | Complete |
+| WEB-03 | Phase 4 | Complete |
+| WEB-04 | Phase 4 | Complete |
+| WEB-05 | Phase 3 | Complete |
 | MOB-01 | Phase 5 | Pending |
 | MOB-02 | Phase 5 | Pending |
 | MOB-03 | Phase 5 | Pending |

@@ -78,8 +78,8 @@ A 6-phase journey from backend foundation to cross-platform habit tracking. We s
 |-------|----------------|--------|-----------|
 | 1. Backend Foundation | 1/1 | Complete | 2026-04-01 |
 | 2. Analytics & Summary | 1/1 | Complete | 2026-04-01 |
-| 3. Web Dashboard (Core) | 0/2 | Not started | - |
-| 4. Web Admin & Insights | 0/2 | Not started | - |
+| 3. Web Dashboard (Core) | 2/2 | Complete | 2026-04-01 |
+| 4. Web Admin & Insights | 2/2 | Complete | 2026-04-01 |
 | 5. Mobile App (Expo) | 0/2 | Not started | - |
 | 6. Final Polish | 0/1 | Not started | - |
 
