@@ -2,25 +2,25 @@
 
 @theme {
   --color-primary: #ffffff;
-  --color-primary-light: #e4e4e7;
-  --color-primary-dark: #d4d4d8;
+  --color-primary-light: #d4d4d8;
+  --color-primary-dark: #a1a1aa;
   
-  --color-accent: #a1a1aa;
-  --color-accent-light: #d4d4d8;
+  --color-accent: #6b7280;
+  --color-accent-light: #9ca3af;
   
-  --color-surface: #000000;
-  --color-surface-light: #27272a;
-  --color-surface-card: #09090b;
+  --color-surface: #252525;
+  --color-surface-light: #3f3f3f; /* borders matching the new bg */
+  --color-surface-card: #2c2c2c; /* slightly elevated cards */
   
-  --color-bg: #000000;
-  --color-bg-light: #09090b;
+  --color-bg: #252525;
+  --color-bg-light: #2c2c2c;
   
-  --color-success: #27272a; /* muted dark gray, contrasts well with white checkmarks */
-  --color-danger: #450a0a; /* muted dark red */
-  --color-warning: #422006; /* muted dark amber */
+  --color-success: #3f3f3f;
+  --color-danger: #4a2a2a;
+  --color-warning: #4a3a2a;
   
-  --color-text: #fafafa;
-  --color-text-muted: #a1a1aa;
+  --color-text: #9b9b9b;
+  --color-text-muted: #6b6b6b;
   
   --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
 }
