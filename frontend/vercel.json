@@ -2,7 +2,7 @@
   "rewrites": [
     {
       "source": "/api/:path*",
-      "destination": "https://habittrackerbackend.onrender.com/api/:path*"
+      "destination": "https://habittrackerbackend-o9fo.onrender.com/api/:path*"
     }
   ]
 }

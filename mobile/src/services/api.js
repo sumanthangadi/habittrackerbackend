@@ -1,8 +1,8 @@
 import axios from 'axios';
 import { Platform } from 'react-native';
 
-// Use the exact local Wi-Fi IP so the physical device/emulator can reach the backend
-const API_URL = 'http://192.168.0.5:5000/api';
+// Production backend URL
+const API_URL = 'https://habittrackerbackend-o9fo.onrender.com/api';
 
 const api = axios.create({
   baseURL: API_URL,
