@@ -7,11 +7,11 @@
 
 ### Backend (API)
 
-- [ ] **BACK-01**: CRUD endpoints for Habits (name, time, type, days, active).
-- [ ] **BACK-02**: Log habit completion with date tracking (HabitLog).
-- [ ] **BACK-03**: CRUD endpoints for Tasks (title, date, time, type, status).
-- [ ] **BACK-04**: Endpoint for today's habits and tasks summary.
-- [ ] **BACK-05**: Endpoint for weekly completion statistics (percentage-based).
+- [x] **BACK-01**: CRUD endpoints for Habits (name, time, type, days, active).
+- [x] **BACK-02**: Log habit completion with date tracking (HabitLog).
+- [x] **BACK-03**: CRUD endpoints for Tasks (title, date, time, type, status).
+- [x] **BACK-04**: Endpoint for today's habits and tasks summary.
+- [x] **BACK-05**: Endpoint for weekly completion statistics (percentage-based).
 
 ### Frontend (Web Dashboard)
 
@@ -46,11 +46,11 @@
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| BACK-01 | Phase 1 | Pending |
-| BACK-02 | Phase 1 | Pending |
-| BACK-03 | Phase 1 | Pending |
-| BACK-04 | Phase 2 | Pending |
-| BACK-05 | Phase 2 | Pending |
+| BACK-01 | Phase 1 | Complete |
+| BACK-02 | Phase 1 | Complete |
+| BACK-03 | Phase 1 | Complete |
+| BACK-04 | Phase 2 | Complete |
+| BACK-05 | Phase 2 | Complete |
 | WEB-01 | Phase 3 | Pending |
 | WEB-02 | Phase 3 | Pending |
 | WEB-03 | Phase 4 | Pending |

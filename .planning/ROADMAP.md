@@ -6,8 +6,8 @@ A 6-phase journey from backend foundation to cross-platform habit tracking. We s
 
 ## Phases
 
-- [ ] **Phase 1: Backend Foundation** - Models and CRUD API for habits and tasks.
-- [ ] **Phase 2: Analytics & Summary** - Habit logging and weekly stats endpoints.
+- [x] **Phase 1: Backend Foundation** - Models and CRUD API for habits and tasks.
+- [x] **Phase 2: Analytics & Summary** - Habit logging and weekly stats endpoints.
 - [ ] **Phase 3: Web Dashboard (Core)** - Today/Week views and habit checklist.
 - [ ] **Phase 4: Web Admin & Insights** - CMS for habits/tasks and Recharts visualization.
 - [ ] **Phase 5: Mobile Mobile (Expo)** - Portable dashboard with simplified UX.
@@ -76,8 +76,8 @@ A 6-phase journey from backend foundation to cross-platform habit tracking. We s
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Backend Foundation | 0/1 | Not started | - |
-| 2. Analytics & Summary | 0/1 | Not started | - |
+| 1. Backend Foundation | 1/1 | Complete | 2026-04-01 |
+| 2. Analytics & Summary | 1/1 | Complete | 2026-04-01 |
 | 3. Web Dashboard (Core) | 0/2 | Not started | - |
 | 4. Web Admin & Insights | 0/2 | Not started | - |
 | 5. Mobile App (Expo) | 0/2 | Not started | - |
