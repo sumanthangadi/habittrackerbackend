@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, SafeAreaView, TouchableOpacity, ScrollView, TextInput, Alert, ActivityIndicator } from 'react-native';
+import { View, Text, StyleSheet, SafeAreaView, TouchableOpacity, ScrollView, TextInput, Alert, ActivityIndicator, StatusBar } from 'react-native';
 import { Theme } from '../theme/Theme';
 import ToggleGroup from '../components/ToggleGroup';
 import { createHabit, createTask, getHabits, getTasks, deleteHabit, deleteTask } from '../services/api';
@@ -112,6 +112,7 @@ export default function AdminScreen() {
 
   return (
     <SafeAreaView style={styles.safeArea}>
+      <StatusBar hidden={true} />
       <View style={styles.container}>
         <View style={styles.header}>
           <Text style={styles.title}>Admin</Text>
@@ -390,13 +391,12 @@ const styles = StyleSheet.create({
   deleteButton: {
     paddingHorizontal: 12,
     paddingVertical: 6,
-    borderWidth: 1,
-    borderColor: Theme.colors.danger,
+    backgroundColor: Theme.colors.danger,
     borderRadius: Theme.borderRadius.sm,
   },
   deleteButtonText: {
-    color: Theme.colors.danger,
+    color: '#ffffff',
     fontSize: 12,
-    fontWeight: '600',
+    fontWeight: 'bold',
   },
 });

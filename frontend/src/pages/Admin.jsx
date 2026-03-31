@@ -288,7 +288,7 @@ export default function Admin() {
                 </button>
                 <button
                   onClick={() => handleDeleteHabit(habit._id)}
-                  className="px-3 py-1.5 text-xs font-medium text-danger hover:bg-danger/10 rounded-lg transition-all cursor-pointer"
+                  className="px-3 py-1.5 text-xs font-medium text-white bg-danger/80 hover:bg-danger rounded-lg transition-all cursor-pointer"
                 >
                   Delete
                 </button>
@@ -321,7 +321,7 @@ export default function Admin() {
                 </button>
                 <button
                   onClick={() => handleDeleteTask(task._id)}
-                  className="px-3 py-1.5 text-xs font-medium text-danger hover:bg-danger/10 rounded-lg transition-all cursor-pointer"
+                  className="px-3 py-1.5 text-xs font-medium text-white bg-danger/80 hover:bg-danger rounded-lg transition-all cursor-pointer"
                 >
                   Delete
                 </button>
