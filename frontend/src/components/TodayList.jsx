@@ -1,10 +1,12 @@
 import { useState, useEffect } from 'react';
-import { getTodayHabits, logHabit, getTasks, updateTask } from '../services/api';
+import { getTodayHabits, logHabit, getTasks, updateTask, createTask } from '../services/api';
 
 export default function TodayList() {
   const [habits, setHabits] = useState([]);
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [isAddingTask, setIsAddingTask] = useState(false);
+  const [newTaskTitle, setNewTaskTitle] = useState('');
 
   const today = new Date().toISOString().split('T')[0];
 
@@ -51,6 +53,24 @@ export default function TodayList() {
       );
     } catch (err) {
       console.error('Failed to toggle task:', err);
+    }
+  };
+
+  const handleAddTask = async (e) => {
+    e.preventDefault();
+    if (!newTaskTitle.trim()) return;
+    
+    try {
+      const res = await createTask({
+        title: newTaskTitle.trim(),
+        date: today,
+        status: 'pending'
+      });
+      setTasks((prev) => [...prev, res.data.data]);
+      setNewTaskTitle('');
+      setIsAddingTask(false);
+    } catch (err) {
+      console.error('Failed to create task:', err);
     }
   };
 
@@ -181,6 +201,49 @@ export default function TodayList() {
           <p className="text-text-muted/60 text-sm mt-1">Add habits or tasks from the Admin panel.</p>
         </div>
       )}
+
+      {/* Add Task Quick Form */}
+      <div className="pt-4 border-t border-surface-light/20">
+        {isAddingTask ? (
+          <form onSubmit={handleAddTask} className="flex gap-2">
+            <input
+              type="text"
+              autoFocus
+              value={newTaskTitle}
+              onChange={(e) => setNewTaskTitle(e.target.value)}
+              placeholder="e.g., Grocery shopping"
+              className="flex-1 bg-surface-light/40 border border-surface-light/50 rounded-xl px-4 py-2.5 text-text placeholder-text-muted/50 focus:outline-none focus:border-primary transition-colors"
+            />
+            <button
+              type="submit"
+              disabled={!newTaskTitle.trim()}
+              className="px-4 py-2 bg-primary hover:bg-primary-dark disabled:opacity-50 disabled:cursor-not-allowed text-white rounded-xl text-sm font-medium transition-all shadow-lg shadow-primary/25 cursor-pointer"
+            >
+              Add
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                setIsAddingTask(false);
+                setNewTaskTitle('');
+              }}
+              className="px-4 py-2 bg-surface-light/40 hover:bg-surface-light/60 text-text-muted rounded-xl text-sm font-medium transition-all cursor-pointer"
+            >
+              Cancel
+            </button>
+          </form>
+        ) : (
+          <button
+            onClick={() => setIsAddingTask(true)}
+            className="w-full flex items-center justify-center gap-2 px-4 py-3 border border-dashed border-surface-light/50 hover:border-primary/50 hover:bg-primary/5 text-text-muted rounded-xl text-sm font-medium transition-all cursor-pointer"
+          >
+            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
+            </svg>
+            Add new task
+          </button>
+        )}
+      </div>
     </div>
   );
 }
