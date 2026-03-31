@@ -217,7 +217,7 @@ export default function TodayList() {
             <button
               type="submit"
               disabled={!newTaskTitle.trim()}
-              className="px-4 py-2 bg-primary hover:bg-primary-dark disabled:opacity-50 disabled:cursor-not-allowed text-white rounded-xl text-sm font-medium transition-all shadow-lg shadow-primary/25 cursor-pointer"
+              className="px-4 py-2 bg-primary hover:bg-primary-dark disabled:opacity-50 disabled:cursor-not-allowed text-bg rounded-xl text-sm font-medium transition-all shadow-lg shadow-primary/25 cursor-pointer"
             >
               Add
             </button>

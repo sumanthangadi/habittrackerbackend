@@ -119,7 +119,7 @@ export default function Admin() {
         </h1>
         <button
           onClick={() => (activeTab === 'habits' ? openHabitForm() : openTaskForm())}
-          className="px-4 py-2 bg-primary hover:bg-primary-dark text-white rounded-xl text-sm font-medium transition-all shadow-lg shadow-primary/25 cursor-pointer"
+          className="px-4 py-2 bg-primary hover:bg-primary-dark text-bg rounded-xl text-sm font-medium transition-all shadow-lg shadow-primary/25 cursor-pointer"
         >
           + Add {activeTab === 'habits' ? 'Habit' : 'Task'}
         </button>
@@ -133,7 +133,7 @@ export default function Admin() {
             onClick={() => { setActiveTab(tab); resetForm(); }}
             className={`px-5 py-2 rounded-lg text-sm font-medium transition-all duration-200 cursor-pointer capitalize ${
               activeTab === tab
-                ? 'bg-primary text-white shadow-lg shadow-primary/25'
+                ? 'bg-primary text-bg shadow-lg shadow-primary/25'
                 : 'text-text-muted hover:text-text hover:bg-surface-light/30'
             }`}
           >
@@ -195,7 +195,7 @@ export default function Admin() {
                           onClick={() => toggleDay(day)}
                           className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all cursor-pointer ${
                             formData.days?.includes(day)
-                              ? 'bg-primary text-white'
+                              ? 'bg-primary text-bg'
                               : 'bg-surface-light/40 text-text-muted hover:bg-surface-light/60'
                           }`}
                         >
@@ -245,7 +245,7 @@ export default function Admin() {
             <div className="flex gap-3 pt-2">
               <button
                 type="submit"
-                className="px-5 py-2.5 bg-primary hover:bg-primary-dark text-white rounded-xl text-sm font-medium transition-all shadow-lg shadow-primary/25 cursor-pointer"
+                className="px-5 py-2.5 bg-primary hover:bg-primary-dark text-bg rounded-xl text-sm font-medium transition-all shadow-lg shadow-primary/25 cursor-pointer"
               >
                 {editingItem ? 'Update' : 'Create'}
               </button>
