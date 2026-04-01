@@ -1,5 +1,5 @@
 import { collection, doc, getDocs, addDoc, updateDoc, deleteDoc, arrayUnion, arrayRemove } from 'firebase/firestore';
-import { db } from './firebase';
+import { db } from '../firebase';
 
 // Helper to mimic Axios JSON response
 const formatRes = (data) => ({ data: { data } });
