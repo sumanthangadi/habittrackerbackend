@@ -99,7 +99,9 @@ export const getTasks = (params) => {
   return tasksPromise.then(allTasks => {
     let filtered = allTasks;
     if (params?.date) {
-      filtered = filtered.filter(t => t.date === params.date);
+      filtered = filtered.filter(t => 
+        t.date === params.date || (t.date < params.date && t.status !== 'done')
+      );
     }
     return formatRes(filtered);
   });
