@@ -57,9 +57,30 @@ export const getTodayHabits = async () => {
 };
 
 export const getWeeklyStats = async () => {
-  // The original backend getWeeklyStats just returned habits with completedDays
   const habitsRes = await getHabits();
-  return formatRes({ habits: habitsRes.data.data });
+  const habits = habitsRes.data.data;
+  
+  const week = [];
+  const daysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+  
+  for (let i = 6; i >= 0; i--) {
+    const d = new Date();
+    d.setDate(d.getDate() - i);
+    const dateStr = d.toISOString().split('T')[0];
+    const dayName = daysOfWeek[d.getDay()];
+
+    const applicableHabits = habits.filter(h => 
+      h.active && (h.type === 'daily' || (h.type === 'custom' && h.days?.includes(dayName)))
+    );
+    
+    const total = applicableHabits.length;
+    const completed = applicableHabits.filter(h => h.completedDays?.includes(dateStr)).length;
+    const percentage = total === 0 ? 0 : Math.round((completed / total) * 100);
+
+    week.push({ day: dayName, percentage, completed, total });
+  }
+
+  return formatRes({ week, habits });
 };
 
 // --- Tasks ---
