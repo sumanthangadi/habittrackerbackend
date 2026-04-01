@@ -4,12 +4,20 @@ import { db } from '../firebase';
 // Helper to mimic Axios response
 const formatRes = (data) => ({ data: { data } });
 
-// --- Habits ---
+// Cached promises to deduplicate parallel requests
+let habitsPromise = null;
 
-export const getHabits = async () => {
-  const snapshot = await getDocs(collection(db, 'habits'));
-  const habits = snapshot.docs.map(doc => ({ _id: doc.id, ...doc.data() }));
-  return formatRes(habits);
+export const getHabits = () => {
+  if (!habitsPromise) {
+    habitsPromise = getDocs(collection(db, 'habits')).then(snapshot => {
+      const habits = snapshot.docs.map(doc => ({ _id: doc.id, ...doc.data() }));
+      
+      // Clear cache after 1 second so next pull-to-refresh gets fresh data
+      setTimeout(() => { habitsPromise = null; }, 1000);
+      return formatRes(habits);
+    });
+  }
+  return habitsPromise;
 };
 
 export const createHabit = async (data) => {
@@ -56,14 +64,24 @@ export const getWeeklyStats = async () => {
 
 // --- Tasks ---
 
-export const getTasks = async (params) => {
-  const snapshot = await getDocs(collection(db, 'tasks'));
-  let tasks = snapshot.docs.map(doc => ({ _id: doc.id, ...doc.data() }));
-  
-  if (params?.date) {
-    tasks = tasks.filter(t => t.date === params.date);
+let tasksPromise = null;
+
+export const getTasks = (params) => {
+  if (!tasksPromise) {
+    tasksPromise = getDocs(collection(db, 'tasks')).then(snapshot => {
+      let tasks = snapshot.docs.map(doc => ({ _id: doc.id, ...doc.data() }));
+      setTimeout(() => { tasksPromise = null; }, 1000);
+      return tasks;
+    });
   }
-  return formatRes(tasks);
+
+  return tasksPromise.then(allTasks => {
+    let filtered = allTasks;
+    if (params?.date) {
+      filtered = filtered.filter(t => t.date === params.date);
+    }
+    return formatRes(filtered);
+  });
 };
 
 export const createTask = async (data) => {
