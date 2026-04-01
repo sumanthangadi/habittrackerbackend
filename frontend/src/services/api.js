@@ -1,25 +1,88 @@
-import axios from 'axios';
+import { collection, doc, getDocs, addDoc, updateDoc, deleteDoc, arrayUnion, arrayRemove } from 'firebase/firestore';
+import { db } from './firebase';
 
-const api = axios.create({
-  baseURL: '/api',
-  headers: { 'Content-Type': 'application/json' },
-});
+// Helper to mimic Axios response
+const formatRes = (data) => ({ data: { data } });
 
-// Habits
-export const getHabits = () => api.get('/habits');
-export const createHabit = (data) => api.post('/habits', data);
-export const updateHabit = (id, data) => api.put(`/habits/${id}`, data);
-export const deleteHabit = (id) => api.delete(`/habits/${id}`);
+// --- Habits ---
 
-// Habit Logs
-export const logHabit = (data) => api.post('/habits/log', data);
-export const getTodayHabits = () => api.get('/habits/today');
-export const getWeeklyStats = () => api.get('/habits/week');
+export const getHabits = async () => {
+  const snapshot = await getDocs(collection(db, 'habits'));
+  const habits = snapshot.docs.map(doc => ({ _id: doc.id, ...doc.data() }));
+  return formatRes(habits);
+};
 
-// Tasks
-export const getTasks = (params) => api.get('/tasks', { params });
-export const createTask = (data) => api.post('/tasks', data);
-export const updateTask = (id, data) => api.put(`/tasks/${id}`, data);
-export const deleteTask = (id) => api.delete(`/tasks/${id}`);
+export const createHabit = async (data) => {
+  const docRef = await addDoc(collection(db, 'habits'), { ...data, completedDays: [] });
+  return formatRes({ _id: docRef.id, ...data, completedDays: [] });
+};
 
-export default api;
+export const updateHabit = async (id, data) => {
+  await updateDoc(doc(db, 'habits', id), data);
+  return formatRes({ _id: id, ...data });
+};
+
+export const deleteHabit = async (id) => {
+  await deleteDoc(doc(db, 'habits', id));
+  return formatRes({ success: true });
+};
+
+// --- Habit Logs ---
+
+export const logHabit = async ({ habitId, date, completed }) => {
+  const habitRef = doc(db, 'habits', habitId);
+  await updateDoc(habitRef, {
+    completedDays: completed ? arrayUnion(date) : arrayRemove(date)
+  });
+  return formatRes({ success: true });
+};
+
+export const getTodayHabits = async () => {
+  // Just returning all habits, the frontend TodayList already handles filtering if needed. 
+  // In the original Node server, we filtered by 'Mon', 'Tue' etc.
+  const shortDay = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][new Date().getDay()];
+  const habitsRes = await getHabits();
+  const todayHabits = habitsRes.data.data.filter(h => 
+    !h.active ? false : h.type === 'daily' || (h.type === 'custom' && h.days?.includes(shortDay))
+  );
+  return formatRes(todayHabits);
+};
+
+export const getWeeklyStats = async () => {
+  // The original backend getWeeklyStats just returned habits with completedDays
+  const habitsRes = await getHabits();
+  return formatRes({ habits: habitsRes.data.data });
+};
+
+// --- Tasks ---
+
+export const getTasks = async (params) => {
+  const snapshot = await getDocs(collection(db, 'tasks'));
+  let tasks = snapshot.docs.map(doc => ({ _id: doc.id, ...doc.data() }));
+  
+  if (params?.date) {
+    tasks = tasks.filter(t => t.date === params.date);
+  }
+  return formatRes(tasks);
+};
+
+export const createTask = async (data) => {
+  const docRef = await addDoc(collection(db, 'tasks'), data);
+  return formatRes({ _id: docRef.id, ...data });
+};
+
+export const updateTask = async (id, data) => {
+  await updateDoc(doc(db, 'tasks', id), data);
+  return formatRes({ _id: id, ...data });
+};
+
+export const deleteTask = async (id) => {
+  await deleteDoc(doc(db, 'tasks', id));
+  return formatRes({ success: true });
+};
+
+// Mock the default axios export just in case
+export default {
+  get: () => Promise.resolve(),
+  post: () => Promise.resolve(),
+};
