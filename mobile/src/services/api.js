@@ -48,15 +48,23 @@ export const logHabit = async ({ habitId, date, completed }) => {
   await updateDoc(habitRef, {
     completedDays: completed ? arrayUnion(date) : arrayRemove(date)
   });
+  // Invalidate cache so next fetch gets fresh data
+  habitsPromise = null;
   return formatRes({ success: true });
 };
 
 export const getTodayHabits = async () => {
+  const today = new Date().toISOString().split('T')[0];
   const shortDay = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][new Date().getDay()];
   const habitsRes = await getHabits();
-  const todayHabits = habitsRes.data.data.filter(h => 
-    !h.active ? false : h.type === 'daily' || (h.type === 'custom' && h.days?.includes(shortDay))
-  );
+  const todayHabits = habitsRes.data.data
+    .filter(h => 
+      !h.active ? false : h.type === 'daily' || (h.type === 'custom' && h.days?.includes(shortDay))
+    )
+    .map(h => ({
+      ...h,
+      completed: h.completedDays?.includes(today) || false
+    }));
   return formatRes(todayHabits);
 };
 
