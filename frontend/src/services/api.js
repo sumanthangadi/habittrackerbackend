@@ -20,14 +20,20 @@ export const getHabits = () => {
   return habitsPromise;
 };
 
+const cleanData = (obj) => {
+  return Object.fromEntries(Object.entries(obj).filter(([_, v]) => v !== undefined));
+};
+
 export const createHabit = async (data) => {
-  const docRef = await addDoc(collection(db, 'habits'), { ...data, completedDays: [] });
-  return formatRes({ _id: docRef.id, ...data, completedDays: [] });
+  const cleaned = cleanData(data);
+  const docRef = await addDoc(collection(db, 'habits'), { ...cleaned, completedDays: [] });
+  return formatRes({ _id: docRef.id, ...cleaned, completedDays: [] });
 };
 
 export const updateHabit = async (id, data) => {
-  await updateDoc(doc(db, 'habits', id), data);
-  return formatRes({ _id: id, ...data });
+  const cleaned = cleanData(data);
+  await updateDoc(doc(db, 'habits', id), cleaned);
+  return formatRes({ _id: id, ...cleaned });
 };
 
 export const deleteHabit = async (id) => {
@@ -108,13 +114,15 @@ export const getTasks = (params) => {
 };
 
 export const createTask = async (data) => {
-  const docRef = await addDoc(collection(db, 'tasks'), data);
-  return formatRes({ _id: docRef.id, ...data });
+  const cleaned = cleanData(data);
+  const docRef = await addDoc(collection(db, 'tasks'), cleaned);
+  return formatRes({ _id: docRef.id, ...cleaned });
 };
 
 export const updateTask = async (id, data) => {
-  await updateDoc(doc(db, 'tasks', id), data);
-  return formatRes({ _id: id, ...data });
+  const cleaned = cleanData(data);
+  await updateDoc(doc(db, 'tasks', id), cleaned);
+  return formatRes({ _id: id, ...cleaned });
 };
 
 export const deleteTask = async (id) => {

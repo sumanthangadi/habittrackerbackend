@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, SafeAreaView, StatusBar } from 'react-native';
+import { View, Text, StyleSheet, StatusBar } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import ToggleGroup from '../components/ToggleGroup';
 import TodayList from '../components/TodayList';
 import WeekGrid from '../components/WeekGrid';

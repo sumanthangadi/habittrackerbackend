@@ -30,6 +30,9 @@ Thumbs.db
 .vscode/settings.json
 .idea/
 
-# Planning / AI agent directories (optional - keep if you want)
-# .planning/
-# .agent/
+# Planning / AI agent directories
+.planning/
+.agent/
+
+# Test files
+frontend/test-firebase.js
