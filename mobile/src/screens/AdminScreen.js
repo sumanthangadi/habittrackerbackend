@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView, TextInput, Alert, ActivityIndicator, StatusBar } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView, TextInput, Alert, ActivityIndicator, StatusBar, Platform } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Theme } from '../theme/Theme';
 import ToggleGroup from '../components/ToggleGroup';
 import { createHabit, createTask, getHabits, getTasks, deleteHabit, deleteTask } from '../services/api';
+import DateTimePicker from '@react-native-community/datetimepicker';
 
 export default function AdminScreen() {
   const [activeTab, setActiveTab] = useState('habits');
@@ -12,7 +13,10 @@ export default function AdminScreen() {
 
   // Form states
   const [name, setName] = useState('');
-  const [time, setTime] = useState('');
+  const [startTime, setStartTime] = useState('');
+  const [endTime, setEndTime] = useState('');
+  const [showStartPicker, setShowStartPicker] = useState(false);
+  const [showEndPicker, setShowEndPicker] = useState(false);
   const [type, setType] = useState('daily');
   const [days, setDays] = useState([]);
 
@@ -22,6 +26,24 @@ export default function AdminScreen() {
     setDays((prev) => 
       prev.includes(day) ? prev.filter((d) => d !== day) : [...prev, day]
     );
+  };
+
+  const onStartTimeChange = (event, selectedDate) => {
+    setShowStartPicker(Platform.OS === 'ios');
+    if (selectedDate) {
+      const h = selectedDate.getHours().toString().padStart(2, '0');
+      const m = selectedDate.getMinutes().toString().padStart(2, '0');
+      setStartTime(`${h}:${m}`);
+    }
+  };
+
+  const onEndTimeChange = (event, selectedDate) => {
+    setShowEndPicker(Platform.OS === 'ios');
+    if (selectedDate) {
+      const h = selectedDate.getHours().toString().padStart(2, '0');
+      const m = selectedDate.getMinutes().toString().padStart(2, '0');
+      setEndTime(`${h}:${m}`);
+    }
   };
 
   const fetchItems = async () => {
@@ -78,7 +100,8 @@ export default function AdminScreen() {
       if (activeTab === 'habits') {
         const payload = {
           name: name.trim(),
-          time: time.trim() || undefined,
+          startTime: startTime || undefined,
+          endTime: endTime || undefined,
           type,
           days: type === 'custom' ? days : undefined,
           active: true,
@@ -89,7 +112,8 @@ export default function AdminScreen() {
         const today = new Date().toISOString().split('T')[0];
         const payload = {
           title: name.trim(),
-          time: time.trim() || undefined,
+          startTime: startTime || undefined, // Tasks also benefit from time pickers now
+          endTime: endTime || undefined,
           date: today,
           status: 'pending',
         };
@@ -99,7 +123,8 @@ export default function AdminScreen() {
       
       // Reset form
       setName('');
-      setTime('');
+      setStartTime('');
+      setEndTime('');
       setType('daily');
       setDays([]);
       
@@ -144,15 +169,46 @@ export default function AdminScreen() {
               />
             </View>
 
-            <View style={styles.inputGroup}>
-              <Text style={styles.label}>Time (Optional)</Text>
-              <TextInput
-                style={styles.input}
-                placeholder="e.g., 8:00 AM"
-                placeholderTextColor={Theme.colors.textMuted}
-                value={time}
-                onChangeText={setTime}
-              />
+            <View style={styles.timeRow}>
+              <View style={[styles.inputGroup, { flex: 1 }]}>
+                <Text style={styles.label}>Start Time</Text>
+                <TouchableOpacity 
+                  style={styles.timeInput} 
+                  onPress={() => setShowStartPicker(true)}
+                >
+                  <Text style={[styles.timeInputText, !startTime && { color: Theme.colors.textMuted }]}>
+                    {startTime || '--:--'}
+                  </Text>
+                </TouchableOpacity>
+                {showStartPicker && (
+                  <DateTimePicker
+                    value={startTime ? new Date(new Date().setHours(startTime.split(':')[0], startTime.split(':')[1])) : new Date()}
+                    mode="time"
+                    is24Hour={true}
+                    onChange={onStartTimeChange}
+                  />
+                )}
+              </View>
+
+              <View style={[styles.inputGroup, { flex: 1, marginLeft: Theme.spacing.md }]}>
+                <Text style={styles.label}>End Time</Text>
+                <TouchableOpacity 
+                  style={styles.timeInput} 
+                  onPress={() => setShowEndPicker(true)}
+                >
+                  <Text style={[styles.timeInputText, !endTime && { color: Theme.colors.textMuted }]}>
+                    {endTime || '--:--'}
+                  </Text>
+                </TouchableOpacity>
+                {showEndPicker && (
+                  <DateTimePicker
+                    value={endTime ? new Date(new Date().setHours(endTime.split(':')[0], endTime.split(':')[1])) : new Date()}
+                    mode="time"
+                    is24Hour={true}
+                    onChange={onEndTimeChange}
+                  />
+                )}
+              </View>
             </View>
 
             {activeTab === 'habits' && (
@@ -209,7 +265,11 @@ export default function AdminScreen() {
                 <View key={item._id} style={styles.listItem}>
                   <View style={styles.itemInfo}>
                     <Text style={styles.itemName}>{activeTab === 'habits' ? item.name : item.title}</Text>
-                    {item.time && <Text style={styles.itemTime}>{item.time}</Text>}
+                    {(item.startTime || item.endTime) && (
+                      <Text style={styles.itemTime}>
+                        {item.startTime || 'Anytime'}{item.endTime ? ` - ${item.endTime}` : ''}
+                      </Text>
+                    )}
                     {activeTab === 'habits' && (
                       <Text style={styles.itemDetails}>
                         {item.type === 'daily' ? 'Every day' : item.days?.join(', ')}
@@ -287,6 +347,22 @@ const styles = StyleSheet.create({
     borderRadius: Theme.borderRadius.md,
     paddingHorizontal: Theme.spacing.md,
     paddingVertical: 12,
+    color: Theme.colors.text,
+    fontSize: 16,
+  },
+  timeRow: {
+    flexDirection: 'row',
+  },
+  timeInput: {
+    backgroundColor: Theme.colors.surfaceLight,
+    borderWidth: 1,
+    borderColor: Theme.colors.surfaceLight,
+    borderRadius: Theme.borderRadius.md,
+    paddingHorizontal: Theme.spacing.md,
+    paddingVertical: 12,
+    justifyContent: 'center',
+  },
+  timeInputText: {
     color: Theme.colors.text,
     fontSize: 16,
   },

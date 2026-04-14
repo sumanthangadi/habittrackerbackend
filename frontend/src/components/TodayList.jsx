@@ -140,8 +140,10 @@ export default function TodayList() {
                   <p className={`font-medium transition-all ${habit.completed ? 'line-through text-text-muted' : 'text-text'}`}>
                     {habit.name}
                   </p>
-                  {habit.time && (
-                    <p className="text-xs text-text-muted mt-0.5">{habit.time}</p>
+                  {(habit.startTime || habit.endTime) && (
+                    <p className="text-xs text-text-muted mt-0.5">
+                      {habit.startTime || 'Anytime'}{habit.endTime ? ` - ${habit.endTime}` : ''}
+                    </p>
                   )}
                 </div>
               </button>

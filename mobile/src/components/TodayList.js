@@ -139,7 +139,11 @@ export default function TodayList() {
                 <Text style={[styles.itemText, habit.completed && styles.itemTextDone]}>
                   {habit.name}
                 </Text>
-                {habit.time && <Text style={styles.itemTime}>{habit.time}</Text>}
+                {(habit.startTime || habit.endTime) && (
+                  <Text style={styles.itemTime}>
+                    {habit.startTime || 'Anytime'}{habit.endTime ? ` - ${habit.endTime}` : ''}
+                  </Text>
+                )}
               </View>
             </TouchableOpacity>
           ))}
@@ -164,7 +168,11 @@ export default function TodayList() {
                 <Text style={[styles.itemText, task.status === 'done' && styles.itemTextDone]}>
                   {task.title}
                 </Text>
-                {task.time && <Text style={styles.itemTime}>{task.time}</Text>}
+                {(task.startTime || task.endTime) && (
+                  <Text style={styles.itemTime}>
+                    {task.startTime || 'Anytime'}{task.endTime ? ` - ${task.endTime}` : ''}
+                  </Text>
+                )}
               </View>
             </TouchableOpacity>
           ))}

@@ -36,8 +36,8 @@ export default function Admin() {
     setEditingItem(habit);
     setFormData(
       habit
-        ? { name: habit.name, time: habit.time || '', type: habit.type, days: habit.days || [], active: habit.active }
-        : { name: '', time: '', type: 'daily', days: [], active: true }
+        ? { name: habit.name, startTime: habit.startTime || '', endTime: habit.endTime || '', type: habit.type, days: habit.days || [], active: habit.active }
+        : { name: '', startTime: '', endTime: '', type: 'daily', days: [], active: true }
     );
     setShowForm(true);
   };
@@ -163,15 +163,25 @@ export default function Admin() {
                     required
                   />
                 </div>
-                <div>
-                  <label className="block text-sm text-text-muted mb-1">Time (optional)</label>
-                  <input
-                    type="text"
-                    value={formData.time || ''}
-                    onChange={(e) => setFormData({ ...formData, time: e.target.value })}
-                    className="w-full bg-surface-light/40 border border-surface-light/50 rounded-xl px-4 py-2.5 text-text placeholder-text-muted/50 focus:outline-none focus:border-primary transition-colors"
-                    placeholder="e.g., 7:00 AM"
-                  />
+                <div className="flex gap-3">
+                  <div className="flex-1">
+                    <label className="block text-sm text-text-muted mb-1">Start Time</label>
+                    <input
+                      type="time"
+                      value={formData.startTime || ''}
+                      onChange={(e) => setFormData({ ...formData, startTime: e.target.value })}
+                      className="w-full bg-surface-light/40 border border-surface-light/50 rounded-xl px-4 py-2.5 text-text focus:outline-none focus:border-primary transition-colors"
+                    />
+                  </div>
+                  <div className="flex-1">
+                    <label className="block text-sm text-text-muted mb-1">End Time</label>
+                    <input
+                      type="time"
+                      value={formData.endTime || ''}
+                      onChange={(e) => setFormData({ ...formData, endTime: e.target.value })}
+                      className="w-full bg-surface-light/40 border border-surface-light/50 rounded-xl px-4 py-2.5 text-text focus:outline-none focus:border-primary transition-colors"
+                    />
+                  </div>
                 </div>
                 <div>
                   <label className="block text-sm text-text-muted mb-1">Type</label>
@@ -276,7 +286,9 @@ export default function Admin() {
                 <p className="font-medium text-text">{habit.name}</p>
                 <p className="text-xs text-text-muted">
                   {habit.type === 'daily' ? 'Every day' : habit.days?.join(', ')}
-                  {habit.time ? ` • ${habit.time}` : ''}
+                  {(habit.startTime || habit.endTime) && (
+                    <> • {habit.startTime || 'Anytime'}{habit.endTime ? ` - ${habit.endTime}` : ''}</>
+                  )}
                 </p>
               </div>
               <div className="flex gap-2">

@@ -181,7 +181,14 @@ export default function WeekGrid() {
 
                 return (
                   <View key={habit._id} style={styles.habitRow}>
-                    <Text style={[styles.habitName, done && styles.habitNameDone]}>{habit.name}</Text>
+                    <View style={{ flex: 1 }}>
+                      <Text style={[styles.habitName, done && styles.habitNameDone]}>{habit.name}</Text>
+                      {(habit.startTime || habit.endTime) && (
+                        <Text style={styles.habitTime}>
+                          {habit.startTime || 'Anytime'}{habit.endTime ? ` - ${habit.endTime}` : ''}
+                        </Text>
+                      )}
+                    </View>
                     <TouchableOpacity
                       activeOpacity={0.7}
                       onPress={() => toggleCell(habit._id, date)}
@@ -296,6 +303,11 @@ const styles = StyleSheet.create({
   },
   habitNameDone: {
     color: Theme.colors.textMuted,
+  },
+  habitTime: {
+    fontSize: 10,
+    color: Theme.colors.textMuted,
+    marginTop: 1,
   },
   toggleBox: {
     width: 28,

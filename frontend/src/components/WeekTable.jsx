@@ -104,7 +104,11 @@ export default function WeekTable() {
                 className="text-center text-xs font-semibold text-text-muted uppercase tracking-wider p-3 bg-surface-light/20 min-w-[140px]"
               >
                 <span className="block text-text text-sm normal-case font-medium">{habit.name}</span>
-                {habit.time && <span className="block text-[10px] text-text-muted/60 mt-0.5">{habit.time}</span>}
+                {(habit.startTime || habit.endTime) && (
+                  <span className="block text-[10px] text-text-muted/60 mt-0.5">
+                    {habit.startTime || 'Anytime'}{habit.endTime ? ` - ${habit.endTime}` : ''}
+                  </span>
+                )}
               </th>
             ))}
             <th className="text-right text-xs font-semibold text-text-muted uppercase tracking-wider p-3 bg-surface-light/20 min-w-[100px] sticky right-0 z-10">

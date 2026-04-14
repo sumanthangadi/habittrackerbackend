@@ -12,9 +12,21 @@ export const getHabits = () => {
     habitsPromise = getDocs(collection(db, 'habits')).then(snapshot => {
       const habits = snapshot.docs.map(doc => ({ _id: doc.id, ...doc.data() }));
       
+      // Sort habits: startTime asc, then createdAt asc
+      const sortedHabits = habits.sort((a, b) => {
+        if (a.startTime && b.startTime) {
+          if (a.startTime !== b.startTime) return a.startTime.localeCompare(b.startTime);
+        } else if (a.startTime) return -1;
+        else if (b.startTime) return 1;
+
+        const timeA = a.createdAt ? new Date(a.createdAt).getTime() : 0;
+        const timeB = b.createdAt ? new Date(b.createdAt).getTime() : 0;
+        return timeA - timeB;
+      });
+
       // Clear cache after 1 second so next pull-to-refresh gets fresh data
       setTimeout(() => { habitsPromise = null; }, 1000);
-      return formatRes(habits);
+      return formatRes(sortedHabits);
     });
   }
   return habitsPromise;
@@ -26,8 +38,9 @@ const cleanData = (obj) => {
 
 export const createHabit = async (data) => {
   const cleaned = cleanData(data);
-  const docRef = await addDoc(collection(db, 'habits'), { ...cleaned, completedDays: [] });
-  return formatRes({ _id: docRef.id, ...cleaned, completedDays: [] });
+  const now = new Date().toISOString();
+  const docRef = await addDoc(collection(db, 'habits'), { ...cleaned, completedDays: [], createdAt: now });
+  return formatRes({ _id: docRef.id, ...cleaned, completedDays: [], createdAt: now });
 };
 
 export const updateHabit = async (id, data) => {
