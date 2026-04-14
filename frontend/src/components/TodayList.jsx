@@ -10,6 +10,16 @@ export default function TodayList() {
 
   const today = new Date().toISOString().split('T')[0];
 
+  const format12h = (timeStr) => {
+    if (!timeStr) return '';
+    const [h, m] = timeStr.split(':');
+    let hours = parseInt(h);
+    const ampm = hours >= 12 ? 'PM' : 'AM';
+    hours = hours % 12;
+    hours = hours ? hours : 12;
+    return `${hours}:${m} ${ampm}`;
+  };
+
   const fetchData = async () => {
     try {
       const [habitsRes, tasksRes] = await Promise.all([
@@ -142,7 +152,7 @@ export default function TodayList() {
                   </p>
                   {(habit.startTime || habit.endTime) && (
                     <p className="text-xs text-text-muted mt-0.5">
-                      {habit.startTime || 'Anytime'}{habit.endTime ? ` - ${habit.endTime}` : ''}
+                      {habit.startTime ? format12h(habit.startTime) : 'Anytime'}{habit.endTime ? ` - ${format12h(habit.endTime)}` : ''}
                     </p>
                   )}
                 </div>

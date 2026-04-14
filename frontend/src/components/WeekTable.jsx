@@ -27,6 +27,16 @@ export default function WeekTable() {
   const weekDates = getWeekDates();
   const todayStr = today.toISOString().split('T')[0];
 
+  const format12h = (timeStr) => {
+    if (!timeStr) return '';
+    const [h, m] = timeStr.split(':');
+    let hours = parseInt(h);
+    const ampm = hours >= 12 ? 'PM' : 'AM';
+    hours = hours % 12;
+    hours = hours ? hours : 12;
+    return `${hours}:${m} ${ampm}`;
+  };
+
   useEffect(() => {
     fetchData();
   }, []);
@@ -106,7 +116,7 @@ export default function WeekTable() {
                 <span className="block text-text text-sm normal-case font-medium">{habit.name}</span>
                 {(habit.startTime || habit.endTime) && (
                   <span className="block text-[10px] text-text-muted/60 mt-0.5">
-                    {habit.startTime || 'Anytime'}{habit.endTime ? ` - ${habit.endTime}` : ''}
+                    {habit.startTime ? format12h(habit.startTime) : 'Anytime'}{habit.endTime ? ` - ${format12h(habit.endTime)}` : ''}
                   </span>
                 )}
               </th>

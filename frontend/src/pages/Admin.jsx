@@ -110,6 +110,16 @@ export default function Admin() {
 
   const daysOfWeek = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 
+  const format12h = (timeStr) => {
+    if (!timeStr) return '';
+    const [h, m] = timeStr.split(':');
+    let hours = parseInt(h);
+    const ampm = hours >= 12 ? 'PM' : 'AM';
+    hours = hours % 12;
+    hours = hours ? hours : 12;
+    return `${hours}:${m} ${ampm}`;
+  };
+
   return (
     <div className="max-w-2xl mx-auto px-4 py-6 space-y-6">
       {/* Header */}
@@ -287,7 +297,7 @@ export default function Admin() {
                 <p className="text-xs text-text-muted">
                   {habit.type === 'daily' ? 'Every day' : habit.days?.join(', ')}
                   {(habit.startTime || habit.endTime) && (
-                    <> • {habit.startTime || 'Anytime'}{habit.endTime ? ` - ${habit.endTime}` : ''}</>
+                    <> • {habit.startTime ? format12h(habit.startTime) : 'Anytime'}{habit.endTime ? ` - ${format12h(habit.endTime)}` : ''}</>
                   )}
                 </p>
               </div>

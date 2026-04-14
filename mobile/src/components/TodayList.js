@@ -13,6 +13,16 @@ export default function TodayList() {
 
   const today = new Date().toISOString().split('T')[0];
 
+  const format12h = (timeStr) => {
+    if (!timeStr) return '';
+    const [h, m] = timeStr.split(':');
+    let hours = parseInt(h);
+    const ampm = hours >= 12 ? 'PM' : 'AM';
+    hours = hours % 12;
+    hours = hours ? hours : 12;
+    return `${hours}:${m} ${ampm}`;
+  };
+
   useEffect(() => {
     fetchData();
   }, []);
@@ -141,7 +151,7 @@ export default function TodayList() {
                 </Text>
                 {(habit.startTime || habit.endTime) && (
                   <Text style={styles.itemTime}>
-                    {habit.startTime || 'Anytime'}{habit.endTime ? ` - ${habit.endTime}` : ''}
+                    {habit.startTime ? format12h(habit.startTime) : 'Anytime'}{habit.endTime ? ` - ${format12h(habit.endTime)}` : ''}
                   </Text>
                 )}
               </View>
@@ -170,7 +180,7 @@ export default function TodayList() {
                 </Text>
                 {(task.startTime || task.endTime) && (
                   <Text style={styles.itemTime}>
-                    {task.startTime || 'Anytime'}{task.endTime ? ` - ${task.endTime}` : ''}
+                    {task.startTime ? format12h(task.startTime) : 'Anytime'}{task.endTime ? ` - ${format12h(task.endTime)}` : ''}
                   </Text>
                 )}
               </View>

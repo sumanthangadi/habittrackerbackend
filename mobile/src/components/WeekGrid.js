@@ -33,6 +33,16 @@ export default function WeekGrid() {
   const weekDates = getWeekDates();
   const todayStr = today.toISOString().split('T')[0];
 
+  const format12h = (timeStr) => {
+    if (!timeStr) return '';
+    const [h, m] = timeStr.split(':');
+    let hours = parseInt(h);
+    const ampm = hours >= 12 ? 'PM' : 'AM';
+    hours = hours % 12;
+    hours = hours ? hours : 12;
+    return `${hours}:${m} ${ampm}`;
+  };
+
   useEffect(() => {
     fetchData();
   }, []);
@@ -185,7 +195,7 @@ export default function WeekGrid() {
                       <Text style={[styles.habitName, done && styles.habitNameDone]}>{habit.name}</Text>
                       {(habit.startTime || habit.endTime) && (
                         <Text style={styles.habitTime}>
-                          {habit.startTime || 'Anytime'}{habit.endTime ? ` - ${habit.endTime}` : ''}
+                          {habit.startTime ? format12h(habit.startTime) : 'Anytime'}{habit.endTime ? ` - ${format12h(habit.endTime)}` : ''}
                         </Text>
                       )}
                     </View>

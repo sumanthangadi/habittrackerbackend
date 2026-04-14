@@ -22,6 +22,16 @@ export default function AdminScreen() {
 
   const DAYS_OF_WEEK = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 
+  const format12h = (timeStr) => {
+    if (!timeStr) return '';
+    const [h, m] = timeStr.split(':');
+    let hours = parseInt(h);
+    const ampm = hours >= 12 ? 'PM' : 'AM';
+    hours = hours % 12;
+    hours = hours ? hours : 12;
+    return `${hours}:${m} ${ampm}`;
+  };
+
   const toggleDay = (day) => {
     setDays((prev) => 
       prev.includes(day) ? prev.filter((d) => d !== day) : [...prev, day]
@@ -177,7 +187,7 @@ export default function AdminScreen() {
                   onPress={() => setShowStartPicker(true)}
                 >
                   <Text style={[styles.timeInputText, !startTime && { color: Theme.colors.textMuted }]}>
-                    {startTime || '--:--'}
+                    {startTime ? format12h(startTime) : '--:--'}
                   </Text>
                 </TouchableOpacity>
                 {showStartPicker && (
@@ -197,7 +207,7 @@ export default function AdminScreen() {
                   onPress={() => setShowEndPicker(true)}
                 >
                   <Text style={[styles.timeInputText, !endTime && { color: Theme.colors.textMuted }]}>
-                    {endTime || '--:--'}
+                    {endTime ? format12h(endTime) : '--:--'}
                   </Text>
                 </TouchableOpacity>
                 {showEndPicker && (
@@ -267,7 +277,7 @@ export default function AdminScreen() {
                     <Text style={styles.itemName}>{activeTab === 'habits' ? item.name : item.title}</Text>
                     {(item.startTime || item.endTime) && (
                       <Text style={styles.itemTime}>
-                        {item.startTime || 'Anytime'}{item.endTime ? ` - ${item.endTime}` : ''}
+                        {item.startTime ? format12h(item.startTime) : 'Anytime'}{item.endTime ? ` - ${format12h(item.endTime)}` : ''}
                       </Text>
                     )}
                     {activeTab === 'habits' && (

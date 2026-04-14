@@ -4,7 +4,7 @@
     "slug": "habit-tracker",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/xo.png",
+    "icon": "./assets/images/xo-icon.png",
     "scheme": "habittracker",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
@@ -15,7 +15,7 @@
     "android": {
       "adaptiveIcon": {
         "backgroundColor": "#252525",
-        "foregroundImage": "./assets/images/xo.png"
+        "foregroundImage": "./assets/images/xo-icon.png"
       },
       "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false,
@@ -23,14 +23,14 @@
     },
     "web": {
       "output": "static",
-      "favicon": "./assets/images/xo.png"
+      "favicon": "./assets/images/xo-icon.png"
     },
     "plugins": [
       "expo-router",
       [
         "expo-splash-screen",
         {
-          "image": "./assets/images/xo.png",
+          "image": "./assets/images/xo-icon.png",
           "imageWidth": 200,
           "resizeMode": "contain",
           "backgroundColor": "#252525",
