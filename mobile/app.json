@@ -45,12 +45,12 @@
       "typedRoutes": true,
       "reactCompiler": true
     },
+    "owner": "sumanthangadi",
     "extra": {
       "router": {},
       "eas": {
-        "projectId": "6b6eeee2-e9ac-4b30-8b84-32a85f177dcb"
+        "projectId": "55f6d724-e352-4dca-8776-1a4d66ca0115"
       }
-    },
-    "owner": "sumanthangadi"
+    }
   }
 }

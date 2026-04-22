@@ -2,13 +2,13 @@ import { initializeApp, getApps, getApp } from 'firebase/app';
 import { initializeFirestore } from 'firebase/firestore';
 
 const firebaseConfig = {
-  apiKey: "AIzaSyC5tDgF4aQs903JQrHS9lJgyYBPPk1OeGc",
-  authDomain: "sumanthhabittracker.firebaseapp.com",
-  projectId: "sumanthhabittracker",
-  storageBucket: "sumanthhabittracker.firebasestorage.app",
-  messagingSenderId: "1054749526621",
-  appId: "1:1054749526621:web:210918df25ab239c089bb4",
-  measurementId: "G-W0RYLEQ4J5"
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID,
+  measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID
 };
 
 const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
